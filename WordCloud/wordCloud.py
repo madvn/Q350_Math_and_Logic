@@ -1,3 +1,9 @@
+###########################################################################
+# Python file that creates simple wordCloud from data
+# Author: Madhavun Candadai
+# Date created: 08/22/2017
+###########################################################################
+
 import numpy as np
 
 dataFileName = 'sampleData.dat'
