@@ -3,7 +3,7 @@ import numpy as np
 dataFileName = 'sampleData.dat'
 wordCloudFileName = 'wordCloud.html'
 fontScalingFactor = 40
-cloudOrderFactor = 0 # in [0,1] where 0=no control on order and 1=ordered vertically
+cloudOrderFactor = 0.3 # in [0,1] where 0=no control on order and 1=ordered vertically
 
 # Open html file and write basic header content
 htmlFile = open(wordCloudFileName,'w')
