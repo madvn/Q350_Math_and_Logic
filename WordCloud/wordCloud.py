@@ -1,14 +1,14 @@
-###########################################################################
-# Python file that creates simple wordCloud from data
-# Author: Madhavun Candadai
-# Date created: 08/22/2017
-###########################################################################
+########################################################
+# Python program to create simple wordClouds
+# Author: Madahavun Candadai
+# Date Created: 08/22/2017
+########################################################
 
 import numpy as np
 
 dataFileName = 'sampleData.dat'
 wordCloudFileName = 'wordCloud.html'
-fontScalingFactor = 40
+fontScalingFactor = 20
 cloudOrderFactor = 0.3 # in [0,1] where 0=no control on order and 1=ordered vertically
 
 # Open html file and write basic header content
