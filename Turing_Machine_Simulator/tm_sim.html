@@ -5,10 +5,13 @@
         <style>
             th, td {
                 padding: 15px;
+                text-align: center;
             }
             td.tm{
                 padding:10px;
-                text-align: center;
+            }
+            td.doc{
+                text-align: left;
             }
         </style>
     </head>
@@ -176,7 +179,7 @@
                             </td></tr>
                             <tr id="move_row"><td>
                                 <input type="radio" id="act_moveL" name="moveR" value="Left" checked="True">Left<br>
-                                <input type="radio" id="act_moveR" name="moveR" value="Right" onchange="actionChange()">Right
+                                <input type="radio" id="act_moveR" name="moveR" value="Right">Right
                             </td></tr>
                             <tr><td>
                                 <input type="button" onclick="stepTuringMachine()" value="Step">
@@ -203,7 +206,7 @@
         <span id="test"></span>
         <table>
             <tr style="vertical-align:top">
-                <td style="width:50%">
+                <td class="doc" style="width:50%">
                     <h3>Instructions</h3>
                     <ol>
                         <li>Begin by initializing the network.
@@ -217,7 +220,7 @@
                         <li>Enter a new tape length and head starting position and click "Initialize Turing Machine" to start over</li>
                     </ol>
                 </td>
-                <td style="width:50%">
+                <td class="doc" style="width:50%">
                     <h3>Example</h3>
                     <ol>
                         <li>Init machine with tape length 12 and head position 2. No initial contents.</li>
@@ -243,7 +246,7 @@
             </tr>
         </table>
         <footer>
-            <p>Written by Madhavun Candadai - madvncv[at]gmail[dot]com - <a href="https://github.com/madvn/Q350_Math_and_Logic/tree/master/Turing_Machine_Simulator">gitHub</a> </p> 
+            <p>Written by Madhavun Candadai - madvncv[at]gmail[dot]com - <a href="https://github.com/madvn/Q350_Math_and_Logic/tree/master/Turing_Machine_Simulator" target="_blank">gitHub</a> </p>
         </footer>
     </body>
 </html>
