@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Turing Machine Simulator</title>
+        <style>
+            th, td {
+                padding: 15px;
+            }
+            td.tm{
+                padding:10px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- The logic for the Turing Machine Simulation is defined below -->
+        <script>
+        var tapeLen = 20
+        var headPos = 17 // holds current head position on tape
+        var tapeValue = "_" // holds value at current head position
+        var head = "<b style=\"font-size:50px\">&#8659<b>"
+        // function called on load to initialize Turing Machine with a blank tape
+        function reset_tm(){
+            document.getElementById("error_mess_tm").style.display = "none"
+            for (i = 0; i < tapeLen; i++) {
+                document.getElementById("tm_head").innerHTML = ""
+                document.getElementById("tm_tape").innerHTML = ""
+            }
+        }
+        function init_tm(){
+            reset_tm()
+            tapeLen = document.getElementById("tapeLenIn").value
+            headPos = document.getElementById("headPosIn").value - 1 // -1 because of 0 indexing
+            initVal = document.getElementById("initTapeVal").value
+
+            // preparing initial values
+            if(initVal.length == 0){
+                initVal = ""
+                for(i=0;i<tapeLen; i++){
+                    initVal += "_"
+                }
+            }
+            if(initVal.length == tapeLen){
+                initVal = initVal.split("")
+            }
+
+            // checking conditions to initialize - initial values equal to tapeLen?
+            if(initVal.length != tapeLen){
+                document.getElementById("error_mess_init").innerHTML = "Error: Initial tape value not equal to tape length"
+                document.getElementById("error_mess_init").style.display = "block"
+                reset_tm()
+            }
+            // checking conditions to initialize - initial head position within tape?
+            else if (headPos > tapeLen || headPos < 1){
+                document.getElementById("error_mess_init").innerHTML = "Error: Head position entered is outside the tape. Cannot initialize Turing Machine"
+                document.getElementById("error_mess_init").style.display = "block"
+                reset_tm()
+            }
+            // all conditions checked - now initialize
+            else{
+                document.getElementById("error_mess_init").style.display = "none"
+                // initialize blank Turing Machine
+                for (i = 0; i < tapeLen; i++) {
+                    if (i==headPos){
+                        document.getElementById("tm_head").innerHTML += "<td class=\"tm\" id=\"headPos"+i+"\">"+head+"</td>"
+                    }
+                    else{
+                        document.getElementById("tm_head").innerHTML += "<td class=\"tm\" id=\"headPos"+i+"\"></td>"
+                    }
+                    document.getElementById("tm_tape").innerHTML += "<td class=\"tm\" id=\"tapePos"+i+"\">"+initVal[i]+"</td>"
+                }
+            }
+        }
+        // function to change the form to allow move or write instruction
+        function actionChange(){
+            //Changing form fields depending on whethere writing to tape or moving tape
+            if (document.getElementById("action_write_r").checked){
+                // hiding move fields and showing write field
+                document.getElementById("move_row").style.display = "none";
+                document.getElementById("write_row").style.display = "block";
+            }
+            if (document.getElementById("action_move_r").checked){
+                // hiding write field and showing move fields
+                document.getElementById("write_row").style.display = "none";
+                document.getElementById("move_row").style.display = "block";
+            }
+        }
+        function stepTuringMachine(){
+            document.getElementById("error_mess_tm").style.display = "none"
+            // read tapeValue at head
+            tapeValue = document.getElementById("tapePos"+headPos).innerHTML
+            //document.getElementById("test").innerHTML = tapeValue
+
+            // if tape value matches the instruction value
+            if(tapeValue == document.getElementById("ifB").value){
+                // Write or move
+                if (document.getElementById("action_write_r").checked){
+                    //write
+                    document.getElementById("tapePos"+headPos).innerHTML = document.getElementById("act_write").value
+                }
+                if (document.getElementById("action_move_r").checked){
+                    document.getElementById("headPos"+headPos).innerHTML = ""
+                    //move - find which way to move
+                    if (document.getElementById("act_moveL").checked){
+                        //move left
+                        if(headPos-1 < 0){
+                            document.getElementById("error_mess_tm").innerHTML = "Message: Head moved out of tape. Reinitialize with longer tape"
+                            document.getElementById("error_mess_tm").style.display = "block"
+                        }
+                        else{
+                            headPos = headPos - 1
+                            document.getElementById("headPos"+headPos).innerHTML = head
+                        }
+                    }
+                    if (document.getElementById("act_moveR").checked){
+                        //move right
+                        //alert(headPos + "--" + tapeLen)
+                        if(headPos+1 > tapeLen-1){
+                            //alert("Moved out")
+                            document.getElementById("error_mess_tm").innerHTML = "Message: Head moved out of tape. Reinitialize with longer tape"
+                            document.getElementById("error_mess_tm").style.display = "block"
+                        }
+                        else{
+                            headPos = headPos + 1
+                            document.getElementById("headPos"+headPos).innerHTML = head
+                        }
+                    }
+                }
+
+            }
+            // if tape value does not match the instruction value
+            else{
+                document.getElementById("error_mess_tm").innerHTML = "Message: Read value read does not match value entered"
+                document.getElementById("error_mess_tm").style.display = "block"
+            }
+        }
+        </script>
+
+        <!-- The webpage is designed below -->
+        <h1 style="text-align:center">Turing Machine Simulator</h1>
+        <table style="width:100%;border:3px solid white;text-align:center;height:60%">
+            <tr>
+                <td colspan="2" style="border:3px solid green">
+                    <table align="center" style="width:80%">
+                        <tr>
+                            <td>Enter the length of tape required: <br/><input type="text" id="tapeLenIn" size="30"/></td>
+                            <td>Enter the starting position of head: <br/><input type="text" id="headPosIn" size="30"/></td>
+                            <td>Optional - Enter intial tape contents<br/>
+                                (use underscore for blanks)<br/>
+                                (should be equal to tape length):<br/>
+                                <input type="text" id="initTapeVal" size="50"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:center"><input type="button" value="Initialize Turing Machine" onclick="init_tm()"></td>
+                        </tr>
+                    </table>
+                    <span id="error_mess_init" style="color:red;display:none"></span>
+                </td>
+            </tr>
+            <tr>
+                <!-- The part of the page that collects the instructions for the Turing Machine step by step -->
+                <td style="border:3px solid blue;width:25%">
+                    <form>
+                        <table align="center">
+                            <tr><td>
+                                If
+                                <input type="text" id="ifB">
+                            </td></tr>
+                            <tr><td>
+                                then
+                                <input type="radio" id="action_write_r" name="actionR" value="Write" onchange="actionChange()">Write
+                                <input type="radio" id="action_move_r" name="actionR" value="Move" onchange="actionChange()" checked="True">Move
+                            </td></tr>
+                            <tr id="write_row" style="display:none"><td>
+                                <input id="act_write" type="text" name="writeB">
+                            </td></tr>
+                            <tr id="move_row"><td>
+                                <input type="radio" id="act_moveL" name="moveR" value="Left" checked="True">Left<br>
+                                <input type="radio" id="act_moveR" name="moveR" value="Right" onchange="actionChange()">Right
+                            </td></tr>
+                            <tr><td>
+                                <input type="button" onclick="stepTuringMachine()" value="Step">
+                            </td></tr>
+                        </table>
+                    </form>
+                </td>
+
+                <!-- The part of the page that visualizes the Turing Machine -->
+                <td style="border:3px solid red;width:75%">
+                    <table align="center">
+                        <tr id="tm_head">
+
+                        </tr>
+                        <tr id="tm_tape">
+
+                        </tr>
+                    </table>
+                    <span id="error_mess_tm" style="display:none;color:red"></span>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <span id="test"></span>
+        <table>
+            <tr style="vertical-align:top">
+                <td style="width:50%">
+                    <h3>Instructions</h3>
+                    <ol>
+                        <li>Begin by initializing the network.
+                        <ul>
+                            <li>Request more than the amount of tape length required. You have to start over if the head moves outside the tape. </li>
+                            <li>Enter the starting position of the read/write head on the tape. The head should be within the tape.</li>
+                            <li>Optionally enter the intial contents of the tape. Enter a string the same length as the tape and use underscore for blank space. For example: initializing the tape of length 5 with red starting at position 3 should be __red. Leaving this field blank creates a blank tape.</li>
+                            <li>Click "Initialize Turing Machine"</li>
+                        </ul>
+                        <li>Enter one instruction after the other and step through the computational steps by clicking "Step" each time</li>
+                        <li>Enter a new tape length and head starting position and click "Initialize Turing Machine" to start over</li>
+                    </ol>
+                </td>
+                <td style="width:50%">
+                    <h3>Example</h3>
+                    <ol>
+                        <li>Init machine with tape length 12 and head position 2. No initial contents.</li>
+                        <li>If _ write L</li>
+                        <li>If L move right</li>
+                        <li>If _ write E</li>
+                        <li>If E move right</li>
+                        <li>If _ write T</li>
+                        <li>If T move right</li>
+                        <li>If _ write '</li>
+                        <li>If ' move right</li>
+                        <li>If _ write S</li>
+                        <li>If S move right</li>
+                        <li>If _ move right</li>
+                        <li>If _ write G</li>
+                        <li>If G move right</li>
+                        <li>If _ write O</li>
+                        <li>If O move right</li>
+                        <li>If _ write !</li>
+                        <li>If ! move right</li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <footer>
+            <p>Written by Madhavun Candadai - madvncv[at]gmail[dot]com - <a href="https://github.com/madvn/Q350_Math_and_Logic/tree/master/Turing_Machine_Simulator">gitHub</a> </p> 
+        </footer>
+    </body>
+</html>
