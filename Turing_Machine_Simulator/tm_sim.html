@@ -10,6 +10,10 @@
             td.tm{
                 padding:10px;
             }
+            td.tm_tape{
+                padding:10px;
+                border:1px solid black;
+            }
             td.doc{
                 text-align: left;
             }
@@ -18,64 +22,80 @@
     <body>
         <!-- The logic for the Turing Machine Simulation is defined below -->
         <script>
-        var tapeLen = 20
-        var headPos = 17 // holds current head position on tape
-        var tapeValue = "_" // holds value at current head position
+        var tape_len = 20
+        var head_pos = 17 // holds current head position on tape
+        var tape_value = "_" // holds value at current head position
         var head = "<b style=\"font-size:50px\">&#8659<b>"
-        // function called on load to initialize Turing Machine with a blank tape
+
+        // To show error messages
+        function show_tm_err(location,message){
+            if(location == 0){
+                // show at init_tm block
+                document.getElementById("error_mess_init").innerHTML = message
+                document.getElementById("error_mess_init").style.display = "block"
+            }
+            if(location ==1){
+                document.getElementById("error_mess_tm").innerHTML = message
+                document.getElementById("error_mess_tm").style.display = "block"
+            }
+        }
+        // function called to erase tm and reset the whole page - probably better to refresh page
         function reset_tm(){
             document.getElementById("error_mess_tm").style.display = "none"
-            for (i = 0; i < tapeLen; i++) {
+            for (i = 0; i < tape_len; i++) {
                 document.getElementById("tm_head").innerHTML = ""
                 document.getElementById("tm_tape").innerHTML = ""
             }
         }
+
+        // function called to initialize Turing Machine - includes checks for different conditions
         function init_tm(){
             reset_tm()
-            tapeLen = document.getElementById("tapeLenIn").value
-            headPos = document.getElementById("headPosIn").value - 1 // -1 because of 0 indexing
-            initVal = document.getElementById("initTapeVal").value
+            tape_len = document.getElementById("tape_len_in").value
+            head_pos = document.getElementById("head_pos_in").value - 1 // -1 because of 0 indexing
+            init_val = document.getElementById("init_tape_value").value
 
-            // preparing initial values
-            if(initVal.length == 0){
-                initVal = ""
-                for(i=0;i<tapeLen; i++){
-                    initVal += "_"
+            // preparing initial values with blanks if nothing was entered
+            if(init_val.length == 0){
+                init_val = ""
+                for(i=0;i<tape_len; i++){
+                    init_val += "_"
                 }
             }
-            if(initVal.length == tapeLen){
-                initVal = initVal.split("")
+            // read entered input values with
+            if(init_val.length == tape_len){
+                init_val = init_val.split("")
             }
 
-            // checking conditions to initialize - initial values equal to tapeLen?
-            if(initVal.length != tapeLen){
-                document.getElementById("error_mess_init").innerHTML = "Error: Initial tape value not equal to tape length"
-                document.getElementById("error_mess_init").style.display = "block"
+            // checking conditions to initialize - initial values equal to tape_len?
+            if(init_val.length != tape_len){
+                show_tm_err(0,"Error: Initial tape value not equal to tape length")
                 reset_tm()
             }
+
             // checking conditions to initialize - initial head position within tape?
-            else if (headPos > tapeLen || headPos < 1){
-                document.getElementById("error_mess_init").innerHTML = "Error: Head position entered is outside the tape. Cannot initialize Turing Machine"
-                document.getElementById("error_mess_init").style.display = "block"
+            else if (head_pos > tape_len || head_pos < 0){
+                show_tm_err(0,"Error: Head position entered is outside the tape. Cannot initialize Turing Machine")
                 reset_tm()
             }
             // all conditions checked - now initialize
             else{
                 document.getElementById("error_mess_init").style.display = "none"
                 // initialize blank Turing Machine
-                for (i = 0; i < tapeLen; i++) {
-                    if (i==headPos){
-                        document.getElementById("tm_head").innerHTML += "<td class=\"tm\" id=\"headPos"+i+"\">"+head+"</td>"
+                for (i = 0; i < tape_len; i++) {
+                    if (i==head_pos){
+                        document.getElementById("tm_head").innerHTML += "<td class=\"tm\" id=\"head_pos"+i+"\">"+head+"</td>"
                     }
                     else{
-                        document.getElementById("tm_head").innerHTML += "<td class=\"tm\" id=\"headPos"+i+"\"></td>"
+                        document.getElementById("tm_head").innerHTML += "<td class=\"tm\" id=\"head_pos"+i+"\"></td>"
                     }
-                    document.getElementById("tm_tape").innerHTML += "<td class=\"tm\" id=\"tapePos"+i+"\">"+initVal[i]+"</td>"
+                    document.getElementById("tm_tape").innerHTML += "<td class=\"tm_tape\" id=\"tape_pos_"+i+"\">"+init_val[i]+"</td>"
                 }
             }
         }
+
         // function to change the form to allow move or write instruction
-        function actionChange(){
+        function action_change(){
             //Changing form fields depending on whethere writing to tape or moving tape
             if (document.getElementById("action_write_r").checked){
                 // hiding move fields and showing write field
@@ -88,44 +108,43 @@
                 document.getElementById("move_row").style.display = "block";
             }
         }
-        function stepTuringMachine(){
+
+        // function to step the turing machine with checks to make sure its a valid step
+        function step_tm(){
             document.getElementById("error_mess_tm").style.display = "none"
-            // read tapeValue at head
-            tapeValue = document.getElementById("tapePos"+headPos).innerHTML
-            //document.getElementById("test").innerHTML = tapeValue
+            // read tape_value at head
+            tape_value = document.getElementById("tape_pos_"+head_pos).innerHTML
 
             // if tape value matches the instruction value
-            if(tapeValue == document.getElementById("ifB").value){
+            if(tape_value == document.getElementById("ifB").value){
                 // Write or move
                 if (document.getElementById("action_write_r").checked){
                     //write
-                    document.getElementById("tapePos"+headPos).innerHTML = document.getElementById("act_write").value
+                    document.getElementById("tape_pos_"+head_pos).innerHTML = document.getElementById("act_write").value
                 }
                 if (document.getElementById("action_move_r").checked){
-                    document.getElementById("headPos"+headPos).innerHTML = ""
+                    document.getElementById("head_pos"+head_pos).innerHTML = ""
                     //move - find which way to move
                     if (document.getElementById("act_moveL").checked){
                         //move left
-                        if(headPos-1 < 0){
-                            document.getElementById("error_mess_tm").innerHTML = "Message: Head moved out of tape. Reinitialize with longer tape"
-                            document.getElementById("error_mess_tm").style.display = "block"
+                        if(head_pos-1 < 0){
+                            //alert("Moved out")
+                            show_tm_err(1,"Message: Head moved out of tape. Reinitialize with longer tape")
                         }
                         else{
-                            headPos = headPos - 1
-                            document.getElementById("headPos"+headPos).innerHTML = head
+                            head_pos = head_pos - 1
+                            document.getElementById("head_pos"+head_pos).innerHTML = head
                         }
                     }
                     if (document.getElementById("act_moveR").checked){
                         //move right
-                        //alert(headPos + "--" + tapeLen)
-                        if(headPos+1 > tapeLen-1){
+                        if(head_pos+1 > tape_len-1){
                             //alert("Moved out")
-                            document.getElementById("error_mess_tm").innerHTML = "Message: Head moved out of tape. Reinitialize with longer tape"
-                            document.getElementById("error_mess_tm").style.display = "block"
+                            show_tm_err(1,"Message: Head moved out of tape. Reinitialize with longer tape")
                         }
                         else{
-                            headPos = headPos + 1
-                            document.getElementById("headPos"+headPos).innerHTML = head
+                            head_pos = head_pos + 1
+                            document.getElementById("head_pos"+head_pos).innerHTML = head
                         }
                     }
                 }
@@ -133,8 +152,7 @@
             }
             // if tape value does not match the instruction value
             else{
-                document.getElementById("error_mess_tm").innerHTML = "Message: Read value read does not match value entered"
-                document.getElementById("error_mess_tm").style.display = "block"
+                show_tm_err(1,"Message: Read value read does not match value entered")
             }
         }
         </script>
@@ -146,12 +164,12 @@
                 <td colspan="2" style="border:3px solid green">
                     <table align="center" style="width:80%">
                         <tr>
-                            <td>Enter the length of tape required: <br/><input type="text" id="tapeLenIn" size="30"/></td>
-                            <td>Enter the starting position of head: <br/><input type="text" id="headPosIn" size="30"/></td>
+                            <td>Enter the length of tape required: <br/><input type="text" id="tape_len_in" size="30"/></td>
+                            <td>Enter the starting position of head: <br/><input type="text" id="head_pos_in" size="30"/></td>
                             <td>Optional - Enter intial tape contents<br/>
                                 (use underscore for blanks)<br/>
                                 (should be equal to tape length):<br/>
-                                <input type="text" id="initTapeVal" size="50"/></td>
+                                <input type="text" id="init_tape_value" size="50"/></td>
                         </tr>
                         <tr>
                             <td colspan="3" style="text-align:center"><input type="button" value="Initialize Turing Machine" onclick="init_tm()"></td>
@@ -171,8 +189,8 @@
                             </td></tr>
                             <tr><td>
                                 then
-                                <input type="radio" id="action_write_r" name="actionR" value="Write" onchange="actionChange()">Write
-                                <input type="radio" id="action_move_r" name="actionR" value="Move" onchange="actionChange()" checked="True">Move
+                                <input type="radio" id="action_write_r" name="actionR" value="Write" onchange="action_change()">Write
+                                <input type="radio" id="action_move_r" name="actionR" value="Move" onchange="action_change()" checked="True">Move
                             </td></tr>
                             <tr id="write_row" style="display:none"><td>
                                 <input id="act_write" type="text" name="writeB">
@@ -182,7 +200,7 @@
                                 <input type="radio" id="act_moveR" name="moveR" value="Right">Right
                             </td></tr>
                             <tr><td>
-                                <input type="button" onclick="stepTuringMachine()" value="Step">
+                                <input type="button" onclick="step_tm()" value="Step">
                             </td></tr>
                         </table>
                     </form>
