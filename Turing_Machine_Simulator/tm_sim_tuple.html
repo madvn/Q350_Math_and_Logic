@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<!--
+HTML doc for Turing Maching simulator
+hosted at http://pages.iu.edu/~madcanda/q350/tm_sim_tuple.html
+Author: Madhavun Candadai
+email: madvncv@gmail.com
+Created: December, 2017
+-->
+<html>
+    <head>
+        <title>Turing Machine Simulator</title>
+        <style>
+            td > * {
+                vertical-align : middle;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+                vertical-align: middle;
+            }
+            td.tm{
+                padding:10px;
+                text-align: center;
+            }
+            td.tm_tape{
+                padding:10px;
+                border:1px solid black;
+                text-align: center;
+            }
+            .tm{
+                text-align: center;
+            }
+            td.doc{
+                text-align: left;
+            }
+            input.init{
+                float: right;
+            }
+            input[type=text], select {
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            textarea{
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+        </style>
+    </head>
+    <body>
+        <script src="tm_sim_tup.js"></script>
+        <!-- The webpage is designed below -->
+        <table align="center" style="width:1200px;border:3px solid white;text-align:center;height:60%;">
+            <tr>
+                <td colspan="2" style="border:3px solid green;text-align:center">
+                    <h1>Turing Machine Simulator</h1>
+                </td>
+            </tr>
+            <tr>
+                <!-- The part of the page that collects the instructions for the Turing Machine step by step -->
+                <td style="border:3px solid blue;width:25%;padding:5px">
+                    <table align="center">
+                        <tr>
+                            <td><span>Enter the length of tape required</span> <input class="init" type="text" id="tape_len_in" size="5" value="4"/></td>
+                        </tr>
+                        <tr>
+                            <td>Enter the starting position of head <br/> Range = [1,tape_length] <input class="init" type="text" id="head_pos_in" size="5" value="2"/></td>
+                        </tr>
+                        <tr>
+                            <td>Optional - Enter intial tape contents<br/>
+                                (use underscore for blanks)<br/>
+                                (should be equal to tape length):
+                                <input class="init" type="text" id="init_tape_value" size="50"/></td>
+                        </tr>
+                        <tr>
+                            <td>Enter tuples one in each line in the following format: current_state, read, write/move, next_state
+                                <textarea style="float:right" rows="10" cols="47" id="tuples_in" >
+0,_,1,1
+1,1,/R,1</textarea></td>
+                        </tr>
+                        <tr>
+                            <td>Enter initial state: <input class="init" type="text" size="5" id="init_state" value="0"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" class="init" style="height:30px; width:120px" value="Initialize Machine" onclick="init_tm()"></td>
+                        </tr>
+                    </table>
+                    <span id="error_mess_init" style="color:red;display:none"></span>
+                    <span id="error_mess_tuples" style="display:none;color:red"></span>
+
+                </td>
+
+                <!-- The part of the page that visualizes the Turing Machine -->
+                <td style="border:3px solid red;width:75%">
+                    <table align="center">
+                        <tr id="tm_head">
+
+                        </tr>
+                        <tr id="tm_tape">
+
+                        </tr>
+                    </table>
+                    <br/>
+                    <span class="tm" style="display:none" id="num_steps_in">Enter number of steps to simulate: <input type="text" size="5" id="num_steps" value="1"><br/><br/>
+                    <input class="tm" type="button" style="height:30px; width:100px" value="Step Machine" onclick="run_tm()"></span><br/>
+                    <span class="tm" id="current_state" style="display:none"><br/><br/>Current state: _</span><br/>
+                    <span class="tm" id="error_mess_tm" style="display:none;color:red"></span>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <span id="test"></span>
+        <table align="center" style="width:1200px">
+            <tr style="vertical-align:top">
+                <td class="doc" style="width:50%;vertical-align:top">
+                    <h3>Instructions</h3>
+                    <ol>
+                        <li>Begin by initializing the network.
+                        <ul>
+                            <li>Request more than the amount of tape length required. You have to start over if the head moves outside the tape. </li>
+                            <li>Enter the starting position of the read/write head on the tape. The head should be within the tape.</li>
+                            <li>Optionally enter the intial contents of the tape. Enter a string the same length as the tape and use underscore for blank space. For example: initializing the tape of length 5 with red starting at position 3 should be __red. Leaving this field blank creates a blank tape.</li>
+                            <li>Click "Initialize Machine"</li>
+                        </ul>
+                        <li>Enter the tuples that define the machine, one in each line, in the following format - current_state,read,write/move,next_state. <em>States can only be numeric.</em> The difference between write and move is as follows:
+                            <ul>
+                                <li> /R or /r cause the tape head to move right </li>
+                                <li> /L and /l cause the tape head to move left </li>
+                                <li> All other characters are written to the tape </li>
+                            </ul>
+                        <li> If all values entered were valid, the machine will appear on the right pane. </li>
+                        <li> Enter a value for the number of steps to simulate the machine and click on step </li>
+                        <li>Enter a new tape length and head starting position and click "Initialize Turing Machine" to start over</li>
+                    </ol>
+                </td>
+                <td class="doc" style="width:50%;vertical-align:top">
+                    <h3>Examples</h3>
+                    <a id="example1_link" href="javascript:show_example(1,2)">Write String</a>&emsp;
+                    <a id="exmaple2_link" href="javascript:show_example(2,2)">Addition</a><br/>
+                    <ol id="example1" style="display:block">
+                        <li>Init machine with tape length 10 and head position 1. No initial contents.</li>
+                        <li>Enter the following tuples<br/>
+                            0,_,W,0<br/>
+                            0,W,/r,1<br/>
+                            1,_,H,1<br/>
+                            1,H,/r,2<br/>
+                            2,_,O,2<br/>
+                            2,O,/r,3<br/>
+                            3,_,A,3<br/>
+                            3,A,/r,4<br/>
+                            4,_,!,4<br/>
+                            4,!,/r,4<br/></li>
+                        <li>Enter initial state as 0</li>
+                        <li>Click "Initilize Machine"</li>
+                        <li>Enter number of steps as 1</li>
+                        <li>Keep clicking "Step"</li>
+                    </ol>
+                    <ol id="example2" style="display:none">
+                        <li>Init machine with tape length 8 and starting position 2. Also enter initial tape contents as _**_***_</li>
+                        <li>Enter the following tuples0,*,/r,0<br/>
+                        0,_,*,1<br/>
+                        1,*,/r,1<br/>
+                        1,_,/l,2<br/>
+                        2,*,_,2<br/></li>
+                        <li>Enter initial state as 0</li>
+                        <li>Click "Initilize Machine"</li>
+                        <li>Enter number of steps as 1</li>
+                        <li>Keep clicking "Step"</li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <footer>
+            <p>Written by Madhavun Candadai - madvncv[at]gmail[dot]com - Code available at <a href="https://github.com/madvn/Q350_Math_and_Logic/tree/master/Turing_Machine_Simulator" target="_blank">gitHub</a> </p>
+        </footer>
+    </body>
+</html>
