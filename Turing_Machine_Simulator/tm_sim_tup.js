@@ -53,6 +53,7 @@ function reset_tm(){
         document.getElementById("tm_tape").innerHTML = ""
     }
     document.getElementById("num_steps_in").style.display = "none"
+    document.getElementById("current_state").style.display = "none"
 }
 
 // function called to initialize Turing Machine - includes checks for different conditions
@@ -69,6 +70,10 @@ function init_tm(){
             init_val += "_"
         }
     }
+
+    // parse string tuples into a matrix
+    parse_tuples()
+
     // read entered initial tape value
     if(init_val.length == tape_len){
         init_val = init_val.split("")
@@ -89,11 +94,15 @@ function init_tm(){
         show_tm_err(ERROR_LOC_INIT,"ERROR: Initial state invalid. States should be numeric")
     }
 
+    else if(TUPLE_PARSE_FLAG == 0){
+        show_tm_err(ERROR_LOC_TUPLE,"ERROR:Tuple format not compatible")
+    }
     // all conditions checked - now initialize
     else{
         // initialize blank Turing Machine
         for (i = 0; i < tape_len; i++) {
             if (i==head_pos){
+                // insert tape head
                 document.getElementById("tm_head").innerHTML += "<td class=\"tm\" id=\"head_pos"+i+"\">"+head+"</td>"
             }
             else{
@@ -114,7 +123,7 @@ function init_tm(){
 function parse_tuples(){
     TUPLE_PARSE_FLAG = 1
     // regular expression to check tuple format
-    var regex = new RegExp("[0-9]+,.*,.*,[0-9]+");
+    var regex = new RegExp("^[0-9]+,.*,.*,[0-9]+$");
 
     var tuples_str = document.getElementById("tuples_in").value
     tuples = tuples_str.split('\n')
