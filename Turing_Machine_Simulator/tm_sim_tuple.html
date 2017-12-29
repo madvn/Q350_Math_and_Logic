@@ -54,13 +54,13 @@ Created: December, 2017
         <!-- The webpage is designed below -->
         <table align="center" style="width:1200px;border:3px solid white;text-align:center;height:60%;">
             <tr>
-                <td colspan="2" style="border:3px solid green;text-align:center">
+                <td colspan="2" style="border:3px solid green;text-align:center;background-color:LightGreen">
                     <h1>Turing Machine Simulator</h1>
                 </td>
             </tr>
             <tr>
                 <!-- The part of the page that collects the instructions for the Turing Machine step by step -->
-                <td style="border:3px solid blue;width:25%;padding:5px">
+                <td style="border:3px solid blue;width:25%;padding:5px;background-color:LightSkyBlue">
                     <table align="center">
                         <tr>
                             <td><span>Enter the length of tape required</span> <input class="init" type="text" id="tape_len_in" size="5" value="4"/></td>
@@ -93,7 +93,7 @@ Created: December, 2017
                 </td>
 
                 <!-- The part of the page that visualizes the Turing Machine -->
-                <td style="border:3px solid red;width:75%">
+                <td style="border:3px solid red;width:75%;background-color:Pink">
                     <table align="center">
                         <tr id="tm_head">
 
@@ -110,11 +110,9 @@ Created: December, 2017
                 </td>
             </tr>
         </table>
-        <br>
-        <span id="test"></span>
         <table align="center" style="width:1200px">
             <tr style="vertical-align:top">
-                <td class="doc" style="width:50%;vertical-align:top">
+                <td class="doc" style="width:50%;vertical-align:top;border:3px solid LightSalmon;background-color:Moccasin">
                     <h3>Instructions</h3>
                     <ol>
                         <li>Begin by initializing the network.
@@ -135,7 +133,7 @@ Created: December, 2017
                         <li>Enter a new tape length and head starting position and click "Initialize Turing Machine" to start over</li>
                     </ol>
                 </td>
-                <td class="doc" style="width:50%;vertical-align:top">
+                <td class="doc" style="width:50%;vertical-align:top;border:3px solid Olive;background-color:Turquoise">
                     <h3>Examples</h3>
                     <a id="example1_link" href="javascript:show_example(1,2)">Write String</a>&emsp;
                     <a id="exmaple2_link" href="javascript:show_example(2,2)">Addition</a><br/>
@@ -172,8 +170,10 @@ Created: December, 2017
                 </td>
             </tr>
         </table>
-        <footer>
-            <p>Written by Madhavun Candadai - madvncv[at]gmail[dot]com - Code available at <a href="https://github.com/madvn/Q350_Math_and_Logic/tree/master/Turing_Machine_Simulator" target="_blank">gitHub</a> </p>
+        <footer >
+            <table align="center" style="text-align:center;width:1200px">
+                <tr><td style="text-align:center;border:3px solid black;background-color:LightSteelBlue"> Written by Madhavun Candadai - madvncv[at]gmail[dot]com - Code available at <a href="https://github.com/madvn/Q350_Math_and_Logic/tree/master/Turing_Machine_Simulator" target="_blank">gitHub</a> </td></tr>
+            </table>
         </footer>
     </body>
 </html>
