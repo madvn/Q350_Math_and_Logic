@@ -8,7 +8,8 @@ Created: December, 2017
 -->
 <html>
     <head>
-        <title>Turing Machine Simulator</title>
+        <title>Turing Machine and Finite State Machine Simulator</title>
+        <meta name="Open-source tuple-based Turing Machine and Finite State Machine Simulator with simulation of tape" content="Author: Madhavun Candadai">
         <style>
             body{
                 background-image:url('bg.jpg');
@@ -64,7 +65,7 @@ Created: December, 2017
         <table  align="center" style="width:1200px;border:0px transparent;text-align:center;">
             <tr>
                 <td colspan="2" class="card">
-                    <h1>Turing Machine Simulator</h1>
+                    <h1>Turing Machine and Finite State Machine Simulator</h1>
                 </td>
             </tr>
             <tr>
@@ -112,7 +113,8 @@ Created: December, 2017
                         </tr>
                     </table>
                     <br/>
-                    <span class="tm" style="display:none" id="num_steps_in">Enter number of steps to simulate: <input type="text" size="5" id="num_steps" value="1"><br/><br/>
+                    <span class="tm" style="display:none" id="num_steps_in">Enter number of steps to simulate:
+                        <input class="init" style="float:none" type="text" size="3" id="num_steps" value="1"><br/><br/>
                     <input class="tm" type="button" style="height:30px; width:100px" value="Step Machine" onclick="run_tm()"></span><br/>
                     <span class="tm" id="current_state" style="display:none"><br/><br/>Current state: _</span><br/>
                     <span class="tm" id="error_mess_tm" style="display:none;color:red"></span>
@@ -144,6 +146,7 @@ Created: December, 2017
                         <li> Enter a new tape length and head starting position and click "Initialize Machine" to start over. </li>
                         <li> NOTE: If you have the tuples format correct and still get an error message, check if there is an empty line at the end</li>
                     </ol>
+                    <span><strong>You can simulate a one-way finite state machine using this same system, by setting the third element of all tuples to /R or /L appropriately</strong></span>
                 </td>
 
                 <td class="card" style="width:50%;text-align:left;vertical-align:top">
@@ -184,6 +187,12 @@ Created: December, 2017
                     </ol>
                 </td>
             </tr>
+            <tr>
+                <td colspan="2" class="card" style="text-align:left">
+                    <h3> Resources </h3>
+                    <a href="https://en.wikipedia.org/wiki/Turing_machine">Wikipedia article on Turing Machines</a><br/>
+                    <a href="https://en.wikipedia.org/wiki/Finite-state_machine">Wikipedia article on Finite State Machines</a><br/>
+                </td>
         </table>
         <footer >
             <table align="center" style="text-align:center;width:1200px">
