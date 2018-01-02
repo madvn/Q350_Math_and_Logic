@@ -21,6 +21,7 @@ var HEAD_OVERFLOW_ERROR = 1
 var NO_MATCHING_TUPLE = 2
 var NO_STEP_ERROR = 0
 var init_state_regEx = new RegExp("^[0-9]+$")
+var i = 0 // for iteration
 
 // To show error messages
 function show_tm_err(location,message){
@@ -143,6 +144,7 @@ function step_tm(){
     // all conditions have been checked to proceed
     // tuples a matrix and now just have to process a step
     // read tape_value at head
+    //alert('stepping')
     tape_value = document.getElementById("tape_pos_"+head_pos).innerHTML
     STEP_ERROR_FLAG = NO_STEP_ERROR
     var found_tuple_flag = 0
@@ -207,9 +209,11 @@ function run_tm(){
         if(TUPLE_PARSE_FLAG){
             // start simulating machine
             var sim_num_steps = document.getElementById("num_steps").value
+            //alert(sim_num_steps)
             if(sim_num_steps > 0){
                 // simulate machine for given number of steps
-                for (i=0;i<sim_num_steps;i++){
+                for(var i=0;i<sim_num_steps;i++){
+                    //alert('for run',i)
                     // step turing machine
                     step_tm()
 

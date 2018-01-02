@@ -47,14 +47,14 @@ Created: December, 2017
             }
             input[type=button]{
                 border: 2px solid #ccc;
-                border-radius: 4px;
+                border-radius: 6px;
                 box-sizing: border-box;
             }
             .card{
                 text-align:center;
                 border:3px solid black;
                 background-color:white;
-                border-radius: 10px 10px;
+                border-radius: 20px 20px;
             }
         </style>
     </head>
@@ -124,30 +124,34 @@ Created: December, 2017
                 <td class="card" style="width:50%;text-align:left">
                     <h3>Instructions</h3>
                     <ol>
-                        <li>Begin by initializing the network.
+                        <li>Begin by initializing the machine.
                         <ul>
                             <li>Request more than the amount of tape length required. You have to start over if the head moves outside the tape. </li>
                             <li>Enter the starting position of the read/write head on the tape. The head should be within the tape.</li>
                             <li>Optionally enter the intial contents of the tape. Enter a string the same length as the tape and use underscore for blank space. For example: initializing the tape of length 5 with red starting at position 3 should be __red. Leaving this field blank creates a blank tape.</li>
-                            <li>Click "Initialize Machine"</li>
                         </ul>
-                        <li>Enter the tuples that define the machine, one in each line, in the following format - current_state,read,write/move,next_state. <em>States can only be numeric.</em> The difference between write and move is as follows:
+                        <li>Enter the tuples that define the machine, one in each line, in the following format - current_state,read,write/move,next_state. <strong>States can only be numeric.</strong> The difference between write and move is as follows:
                             <ul>
-                                <li> /R or /r cause the tape head to move right </li>
-                                <li> /L and /l cause the tape head to move left </li>
-                                <li> All other characters are written to the tape </li>
+                                <li> /R or /r causes the tape head to move right. </li>
+                                <li> /L and /l causes the tape head to move left. </li>
+                                <li> All other characters are written to the tape. </li>
                             </ul>
+                        <li> Enter a value for the initial state of the machine.</li>
+                        <li> Click "Initialize Machine". </li>
                         <li> If all values entered were valid, the machine will appear on the right pane. </li>
-                        <li> Enter a value for the number of steps to simulate the machine and click on step </li>
-                        <li>Enter a new tape length and head starting position and click "Initialize Turing Machine" to start over</li>
+                        <li> Enter a value for the number of steps to simulate the machine and click on "Step Machine". </li>
+                        <li> Updating/editing the tuples at any point will be reflected the next time the machine is stepped. </li>
+                        <li> Enter a new tape length and head starting position and click "Initialize Machine" to start over. </li>
+                        <li> NOTE: If you have the tuples format correct and still get an error message, check if there is an empty line at the end</li>
                     </ol>
                 </td>
+
                 <td class="card" style="width:50%;text-align:left;vertical-align:top">
                     <h3>Examples</h3>
                     <a id="example1_link" href="javascript:show_example(1,2)">Write String</a>&emsp;
                     <a id="exmaple2_link" href="javascript:show_example(2,2)">Addition</a><br/>
                     <ol id="example1" style="display:block">
-                        <li>Init machine with tape length 10 and head position 1. No initial contents.</li>
+                        <li>Set tape length to 10 and head position to 1. No initial contents.</li>
                         <li>Enter the following tuples<br/>
                             0,_,W,0<br/>
                             0,W,/r,1<br/>
@@ -158,23 +162,25 @@ Created: December, 2017
                             3,_,A,3<br/>
                             3,A,/r,4<br/>
                             4,_,!,4<br/>
-                            4,!,/r,4<br/></li>
+                            4,!,/r,5<br/></li>
                         <li>Enter initial state as 0</li>
-                        <li>Click "Initilize Machine"</li>
+                        <li>Click "Initialize Machine"</li>
                         <li>Enter number of steps as 1</li>
-                        <li>Keep clicking "Step"</li>
+                        <li>Keep clicking "Step Machine" until machine completes writing the string and halts. </li>
                     </ol>
                     <ol id="example2" style="display:none">
-                        <li>Init machine with tape length 8 and starting position 2. Also enter initial tape contents as _**_***_</li>
-                        <li>Enter the following tuples0,*,/r,0<br/>
-                        0,_,*,1<br/>
-                        1,*,/r,1<br/>
-                        1,_,/l,2<br/>
-                        2,*,_,2<br/></li>
-                        <li>Enter initial state as 0</li>
-                        <li>Click "Initilize Machine"</li>
-                        <li>Enter number of steps as 1</li>
-                        <li>Keep clicking "Step"</li>
+                        <li>This example of addition represents 2 as ** and 3 as ***, to perform 2+3</li>
+                        <li>Set tape length to 8 and starting position to 2. Also enter initial tape contents as _**_***_</li>
+                        <li>Enter the following tuples<br/>
+                            0,*,/r,0<br/>
+                            0,_,*,1<br/>
+                            1,*,/r,1<br/>
+                            1,_,/l,2<br/>
+                            2,*,_,2<br/></li>
+                        <li>Enter initial state as 0.</li>
+                        <li>Click "Initilize Machine".</li>
+                        <li>Enter number of steps as 1.</li>
+                        <li>Keep clicking "Step Machine" until the machine halts. </li>
                     </ol>
                 </td>
             </tr>
