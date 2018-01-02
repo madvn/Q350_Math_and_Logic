@@ -1,4 +1,4 @@
-## Turing Machine Simulator
+## Turing Machine and Finite State Machine Simulator
 
 hosted at http://pages.iu.edu/~madcanda/q350/tm_sim_tuple.html
 
@@ -17,3 +17,5 @@ hosted at http://pages.iu.edu/~madcanda/q350/tm_sim_tuple.html
 7. Updating/editing the tuples at any point will be reflected the next time the machine is stepped. 
 8. Enter a new tape length and head starting position and click "Initialize Machine" to start over. 
 9. NOTE: If you have the tuples format correct and still get an error message, check if there is an empty line at the end
+
+**You can simulate a one-way finite state machine using this same system, by setting the third element of all tuples to /R or /L appropriately**
