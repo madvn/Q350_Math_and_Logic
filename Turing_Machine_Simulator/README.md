@@ -1,6 +1,6 @@
 ## Turing Machine and Finite State Machine Simulator
 
-hosted at http://pages.iu.edu/~madcanda/q350/tm_sim_tuple.html
+hosted at http://mcandadai.com/q350/tm_sim_tuple.html
 
 1. Begin by initializing the machine.
     - Request more than the amount of tape length required. You have to start over if the head moves outside the tape. 
